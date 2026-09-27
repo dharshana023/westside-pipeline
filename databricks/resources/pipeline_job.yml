@@ -13,7 +13,7 @@ resources:
       tasks:
         - task_key: extract_and_stage
           notebook_task:
-            notebook_path: ../notebooks/Python-based Batch Pipeline.py
+            notebook_path: ../../notebooks/Python-based Batch Pipeline.py
             base_parameters:
               target_catalog: ${var.catalog}
           libraries:
@@ -23,7 +23,7 @@ resources:
           depends_on:
             - task_key: extract_and_stage
           notebook_task:
-            notebook_path: ../notebooks/Designing and Building valid Pipelines with specific characteristics.py
+            notebook_path: ../../notebooks/Designing and Building valid Pipelines with specific characteristics.py
             base_parameters:
               target_catalog: ${var.catalog}
           libraries:

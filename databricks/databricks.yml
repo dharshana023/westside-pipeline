@@ -9,6 +9,12 @@
 bundle:
   name: westside_pipeline
 
+permissions:
+  - user_name: 71762233009@cit.edu.in
+    level: CAN_MANAGE
+  - group_name: data-engineering
+    level: CAN_RUN
+
 sync:
   paths:
     - ..
@@ -41,9 +47,6 @@ targets:
     variables:
       catalog: prod_catalog
       schedule_pause_status: UNPAUSED
-    permissions:
-      - level: CAN_RUN
-        group_name: data-engineering
 
 variables:
   catalog:
