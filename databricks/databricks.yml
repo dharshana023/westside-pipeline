@@ -38,12 +38,16 @@ targets:
 
   staging:
     mode: production
+    workspace:
+      root_path: /Workspace/Users/71762233009@cit.edu.in/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: staging_catalog
       schedule_pause_status: UNPAUSED
 
   prod:
     mode: production
+    workspace:
+      root_path: /Workspace/Users/71762233009@cit.edu.in/.bundle/${bundle.name}/${bundle.target}
     variables:
       catalog: prod_catalog
       schedule_pause_status: UNPAUSED
