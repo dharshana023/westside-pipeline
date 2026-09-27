@@ -6,12 +6,13 @@
 # API      -> Bronze -> Silver -> Gold
 # ============================================================
 
-import requests
 import logging
 from datetime import datetime, timezone
 
-from pyspark.sql import SparkSession, functions as F, types as T
-
+import requests
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql import types as T
 
 # ============================================================
 # 1. LOGGING
@@ -44,7 +45,7 @@ GOLD_TABLE = "gold_api_post_summary"
 
 try:
 
-    spark
+    spark  # noqa: B018
 
     log.info(
         "Using the Databricks-provided SparkSession."
@@ -508,12 +509,13 @@ print("==========================================")
 # API -> Bronze -> Silver -> Gold
 # ============================================================
 
-import requests
 import logging
 from datetime import datetime, timezone
 
-from pyspark.sql import SparkSession, functions as F, types as T
-
+import requests
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql import types as T
 
 # ============================================================
 # 1. LOGGING
@@ -545,7 +547,7 @@ GOLD_TABLE = "gold_product_summary"
 # ============================================================
 
 try:
-    spark
+    spark  # noqa: B018
     log.info("Using the Databricks-provided SparkSession.")
 
 except NameError:
@@ -680,7 +682,7 @@ def extract(
 
             return records
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
 
             log.warning(
                 f"Extract attempt {attempt} failed: "
@@ -1164,14 +1166,14 @@ print("==========================================")
 # Databricks Serverless Compatible
 # ============================================================
 
-import requests
 import logging
-import pandas as pd
-
 from datetime import datetime, timezone
 
-from pyspark.sql import SparkSession, functions as F, types as T
-
+import pandas as pd
+import requests
+from pyspark.sql import SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql import types as T
 
 # ============================================================
 # 1. LOGGING
@@ -1198,7 +1200,7 @@ API_URL = "https://fakestoreapi.com/products"
 
 try:
 
-    spark
+    spark  # noqa: B018
 
     log.info(
         "Using the Databricks-provided SparkSession."
@@ -1343,7 +1345,7 @@ def extract(
 
             return records
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
 
             log.warning(
                 f"Extract attempt {attempt} failed: "
@@ -1421,7 +1423,7 @@ def get_usd_to_inr_rate() -> float:
 
         return float(rate)
 
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
 
         fallback_rate = 83.0
 

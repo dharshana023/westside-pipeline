@@ -6,18 +6,15 @@
 # Runtime: Databricks (PySpark / Delta Lake)
 # ============================================================================
 
-import os
-import json
 import logging
-from datetime import datetime, timedelta
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, Optional
+from datetime import datetime, timedelta
 
+from delta.tables import DeltaTable
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import StructType
-from pyspark.sql.utils import AnalysisException, ParseException
-from delta.tables import DeltaTable
 
 # ---------------------------------------------------------------------------
 # Logging – structured, idempotent across reruns
@@ -209,7 +206,7 @@ def idempotent_delete_insert(
     df: DataFrame,
     table_name: str,
     join_cols: list[str],
-    replace_condition: Optional[str] = None,
+    replace_condition: str | None = None,
 ) -> None:
     """
     Delete-and-Insert (REPLACE WHERE) pattern.
@@ -258,7 +255,7 @@ def atomic_batch_write(
     table_name: str,
     join_cols: list[str],
     mode: str = "merge",
-    replace_condition: Optional[str] = None,
+    replace_condition: str | None = None,
 ) -> str:
     """
     All-or-nothing batch write.

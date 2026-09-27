@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from pipeline.extract import fetch_products, ExtractionError
+from pipeline.extract import ExtractionError, fetch_products
 
 
 def _mock_session(json_payload=None, status_error=None, side_effect=None):
