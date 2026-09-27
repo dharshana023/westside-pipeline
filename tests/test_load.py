@@ -3,10 +3,10 @@ import sqlite3
 import pytest
 
 from pipeline.load import (
-    init_schema,
-    idempotent_merge_upsert,
-    atomic_replace_batch,
     already_succeeded,
+    atomic_replace_batch,
+    idempotent_merge_upsert,
+    init_schema,
     record_run,
 )
 
@@ -59,7 +59,7 @@ class TestAtomicReplaceBatch:
         atomic_replace_batch(conn, [_rec("k1")], "batchA")  # baseline good state
 
         bad_records = [_rec("k2", name="B"), {"product_key": "k3"}]  # second record is malformed
-        with pytest.raises(Exception):
+        with pytest.raises(KeyError):
             atomic_replace_batch(conn, bad_records, "batchB")
 
         # batchA's row must be untouched, and no partial batchB rows should exist
@@ -68,7 +68,7 @@ class TestAtomicReplaceBatch:
 
     def test_retry_after_fixing_the_bad_record_succeeds_fully(self, conn):
         bad_records = [_rec("k2"), {"product_key": "k3"}]
-        with pytest.raises(Exception):
+        with pytest.raises(KeyError):
             atomic_replace_batch(conn, bad_records, "batchB")
 
         good_records = [_rec("k2"), _rec("k3", name="C")]

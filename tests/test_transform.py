@@ -5,10 +5,10 @@ from pipeline.transform import (
     clean_price,
     clean_price_series,
     extract_brand,
-    standardize_category,
+    flatten_rating,
     make_product_key,
     row_hash,
-    flatten_rating,
+    standardize_category,
     transform_catalog,
 )
 
