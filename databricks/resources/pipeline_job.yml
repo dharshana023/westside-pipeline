@@ -16,8 +16,7 @@ resources:
             notebook_path: ../../notebooks/Python-based Batch Pipeline.py
             base_parameters:
               target_catalog: ${var.catalog}
-          libraries:
-            - whl: ../../dist/westside_pipeline-0.1.0-py3-none-any.whl
+          environment_key: serverless
 
         - task_key: validate_and_load
           depends_on:
@@ -26,8 +25,14 @@ resources:
             notebook_path: ../../notebooks/Designing and Building valid Pipelines with specific characteristics.py
             base_parameters:
               target_catalog: ${var.catalog}
-          libraries:
-            - whl: ../../dist/westside_pipeline-0.1.0-py3-none-any.whl
+          environment_key: serverless
+
+      environments:
+        - environment_key: serverless
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ${workspace.root_path}/artifacts/.internal/westside_pipeline-0.1.0-py3-none-any.whl
 
       email_notifications:
         on_failure:
