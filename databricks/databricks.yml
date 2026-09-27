@@ -22,24 +22,18 @@ targets:
   dev:
     mode: development
     default: true
-    workspace:
-      host: ${DATABRICKS_HOST}
     variables:
       catalog: dev_catalog
       schedule_pause_status: PAUSED
 
   staging:
     mode: production
-    workspace:
-      host: ${DATABRICKS_HOST}
     variables:
       catalog: staging_catalog
       schedule_pause_status: UNPAUSED
 
   prod:
     mode: production
-    workspace:
-      host: ${DATABRICKS_HOST}
     variables:
       catalog: prod_catalog
       schedule_pause_status: UNPAUSED
