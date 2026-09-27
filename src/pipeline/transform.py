@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import hashlib
 import re
+from collections.abc import Iterable
 from datetime import datetime, timezone
-from typing import Iterable
 
 import pandas as pd
 
