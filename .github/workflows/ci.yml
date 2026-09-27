@@ -43,14 +43,19 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
+      - name: Install Python build tools
+        run: python -m pip install build
+
       - name: Install Databricks CLI
         run: curl -fsSL https://raw.githubusercontent.com/databricks/setup-cli/main/install.sh | sh
       - name: Validate bundle
+        working-directory: databricks
         run: databricks bundle validate -t prod
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       - name: Deploy bundle
+        working-directory: databricks
         run: databricks bundle deploy -t prod
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
