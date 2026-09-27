@@ -9,6 +9,10 @@
 bundle:
   name: westside_pipeline
 
+sync:
+  paths:
+    - ..
+
 include:
   - resources/*.yml
 
