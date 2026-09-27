@@ -17,7 +17,7 @@ resources:
             base_parameters:
               target_catalog: ${var.catalog}
           libraries:
-            - whl: ../dist/westside_pipeline-0.1.0-py3-none-any.whl
+            - whl: ../../dist/westside_pipeline-0.1.0-py3-none-any.whl
 
         - task_key: validate_and_load
           depends_on:
@@ -27,7 +27,7 @@ resources:
             base_parameters:
               target_catalog: ${var.catalog}
           libraries:
-            - whl: ../dist/westside_pipeline-0.1.0-py3-none-any.whl
+            - whl: ../../dist/westside_pipeline-0.1.0-py3-none-any.whl
 
       email_notifications:
         on_failure:
