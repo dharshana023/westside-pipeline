@@ -1,0 +1,48 @@
+# Databricks Asset Bundle (DAB) — the job, cluster, and schedule are defined here in
+# version-controlled YAML instead of being clicked together in the Databricks UI.
+# The SAME bundle deploys to dev/staging/prod; only the `targets` block changes.
+#
+# Deploy locally with the Databricks CLI:
+#   databricks bundle validate -t dev
+#   databricks bundle deploy   -t dev
+#   databricks bundle run westside_pipeline_job -t dev
+bundle:
+  name: westside_pipeline
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: ${DATABRICKS_HOST}
+    variables:
+      catalog: dev_catalog
+      schedule_paused: true
+
+  staging:
+    mode: production
+    workspace:
+      host: ${DATABRICKS_HOST}
+    variables:
+      catalog: staging_catalog
+      schedule_paused: false
+
+  prod:
+    mode: production
+    workspace:
+      host: ${DATABRICKS_HOST}
+    variables:
+      catalog: prod_catalog
+      schedule_paused: false
+    permissions:
+      - level: CAN_MANAGE_RUN
+        group_name: data-engineering
+
+variables:
+  catalog:
+    description: Unity Catalog to write curated tables into for this environment
+  schedule_paused:
+    description: Whether the job's schedule trigger starts paused (true in dev)

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+*.egg-info/
+.venv/
+venv/
+
+# Data & pipeline artifacts (never commit generated data or DB files)
+*.db
+*.sqlite
+*.sqlite3
+/data/
+/output/
+/westside_dw/
+/product_warehouse/
+*.csv
+!tests/fixtures/*.csv
+
+# Databricks
+.databricks/
+.databricks-connect
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

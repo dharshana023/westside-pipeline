@@ -1,0 +1,35 @@
+resources:
+  jobs:
+    westside_pipeline_job:
+      name: westside_pipeline_job
+      schedule:
+        quartz_cron_expression: "0 0 7 * * ?"   # daily 07:00 UTC
+        timezone_id: UTC
+        pause_status: >-
+          ${var.schedule_paused ? "PAUSED" : "UNPAUSED"}
+
+      # Every task installs the same versioned wheel built from src/pipeline, so the
+      # exact code that passed CI (see .github/workflows/ci.yml) is what runs in prod --
+      # no "it worked on my cluster" drift between environments.
+      tasks:
+        - task_key: extract_and_stage
+          notebook_task:
+            notebook_path: ../notebooks/Python-based Batch Pipeline.py
+            base_parameters:
+              target_catalog: ${var.catalog}
+          libraries:
+            - whl: ../dist/westside_pipeline-0.1.0-py3-none-any.whl
+
+        - task_key: validate_and_load
+          depends_on:
+            - task_key: extract_and_stage
+          notebook_task:
+            notebook_path: ../notebooks/Designing and Building valid Pipelines with specific characteristics.py
+            base_parameters:
+              target_catalog: ${var.catalog}
+          libraries:
+            - whl: ../dist/westside_pipeline-0.1.0-py3-none-any.whl
+
+      email_notifications:
+        on_failure:
+          - data-eng-alerts@example.com
