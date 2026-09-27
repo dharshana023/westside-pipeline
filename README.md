@@ -39,8 +39,18 @@ westside-pipeline/
 │   ├── databricks.yml         #   dev / staging / prod targets
 │   └── resources/pipeline_job.yml
 ├── docs/GIT_BRANCHING_STRATEGY.md
+├── docs/GITHUB_SETUP.md       # connect this repo to GitHub, protect branches, first CI run
+├── docs/AIRFLOW_SETUP.md      # run the pipeline on a local Airflow instance
+├── airflow/dags/westside_pipeline_dag.py   # the DAG: extract -> transform -> validate -> load
 └── notebooks/                 # the original Databricks lab notebooks, for reference
 ```
+
+## Next steps
+
+- **GitHub:** see `docs/GITHUB_SETUP.md` — push this repo, protect `main`/`develop`,
+  add the two Databricks secrets if you want the prod-deploy job, open your first PR.
+- **Airflow:** see `docs/AIRFLOW_SETUP.md` — install Airflow locally, point it at this
+  repo, deploy `airflow/dags/westside_pipeline_dag.py`, and try a backfill.
 
 ## Why the pipeline code lives outside the notebooks
 
