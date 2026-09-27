@@ -1,3 +1,4 @@
+
 # Databricks notebook source
 # ============================================================
 # API BATCH DATA PIPELINE
@@ -42,7 +43,7 @@ GOLD_TABLE = "gold_api_post_summary"
 # ============================================================
 
 try:
-    assert spark is not None
+    spark  # noqa: B018
 
     log.info(
         "Using the Databricks-provided SparkSession."
@@ -504,11 +505,8 @@ GOLD_TABLE = "gold_product_summary"
 # ============================================================
 
 try:
-    assert spark is not None
-
-    log.info(
-        "Using the Databricks-provided SparkSession."
-    )
+    spark  # noqa: B018
+    log.info("Using the Databricks-provided SparkSession.")
 
 except NameError:
     spark = (
@@ -1111,7 +1109,7 @@ API_URL = "https://fakestoreapi.com/products"
 # ============================================================
 
 try:
-    assert spark is not None
+    spark  # noqa: B018
 
     log.info(
         "Using the Databricks-provided SparkSession."
@@ -1819,3 +1817,4 @@ print(
         truncate=40
     )
 )
+

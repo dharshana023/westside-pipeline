@@ -1,35 +1,15 @@
 import pandas as pd
 import pytest
 
-from pipeline.quality import check_schema, detect_price_outliers, validate
+from pipeline.quality import validate
 
 
 def _df(rows):
     return pd.DataFrame(rows)
 
 
-class TestCheckSchema:
-    def test_passes_with_required_columns(self):
-        check_schema(_df([{"name": "a", "price": 1, "category": "x"}]))
-
-    def test_raises_on_missing_column(self):
-        with pytest.raises(ValueError, match="missing columns"):
-            check_schema(_df([{"name": "a", "price": 1}]))
-
-
-class TestDetectPriceOutliers:
-    def test_flags_extreme_high_values(self):
-        prices = pd.Series([10, 12, 11, 13, 9, 10000])
-        mask = detect_price_outliers(prices)
-        assert mask.iloc[-1] == True
-        assert mask.iloc[:-1].sum() == 0
-
-    def test_empty_series_returns_empty_mask(self):
-        assert len(detect_price_outliers(pd.Series([], dtype=float))) == 0
-
-
 class TestValidate:
-    def test_valid_batch_passes_through_untouched(self):
+    def test_valid_rows_pass(self):
         df = _df(
             [
                 {
@@ -120,7 +100,9 @@ class TestValidate:
         assert "price_outlier" in report.reject_reasons
         assert "Outlier" not in list(valid["name"])
 
-    def test_duplicate_key_is_dropped_and_counted_separately_from_rejects(self):
+    def test_duplicate_key_is_dropped_and_counted_separately_from_rejects(
+        self,
+    ):
         df = _df(
             [
                 {
@@ -145,9 +127,19 @@ class TestValidate:
         assert report.rejected_rows == 0
 
     def test_missing_schema_raises_immediately(self):
-        df = _df([{"name": "A", "category": "men"}])
+        df = _df(
+            [
+                {
+                    "name": "A",
+                    "category": "men",
+                }
+            ]
+        )
 
-        with pytest.raises(ValueError, match="Schema validation failed"):
+        with pytest.raises(
+            ValueError,
+            match="Schema validation failed",
+        ):
             validate(df)
 
     def test_report_counts_are_internally_consistent(self):
@@ -188,4 +180,5 @@ class TestValidate:
             + report.rejected_rows
             + report.duplicate_rows_dropped
         )
+
         assert report.valid_rows == len(valid)

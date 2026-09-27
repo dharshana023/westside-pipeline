@@ -1,3 +1,4 @@
+
 """
 westside_pipeline_dag.py
 
@@ -93,7 +94,6 @@ def westside_pipeline():
         records = [transform.flatten_rating(r) for r in records]
 
         df = pd.DataFrame(records).rename(columns={"title": "name"})
-
         df["subcategory"] = df.get("category", "unknown")
 
         df = transform.transform_catalog(
@@ -107,7 +107,6 @@ def westside_pipeline():
         import pandas as pd
 
         df = pd.DataFrame(records)
-
         valid_df, _rejects_df, report = quality.validate(df)
 
         if report.reject_rate > 0.5:
@@ -162,7 +161,9 @@ def westside_pipeline():
 
     transformed = transform_task(raw)
 
-    validated = validate_task(transformed)
+    validated = validate_task(
+        transformed
+    )  # 'ds' is auto-injected by Airflow's TaskFlow context
 
     load_task(validated)
 
