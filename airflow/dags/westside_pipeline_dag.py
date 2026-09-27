@@ -1,3 +1,4 @@
+
 """
 westside_pipeline_dag.py
 
@@ -59,9 +60,13 @@ def westside_pipeline():
     def check_already_done(ds: str) -> bool:
         """Idempotency guard: skip the whole DAG run if this date already succeeded."""
         os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
+
         conn = sqlite3.connect(DB_PATH, isolation_level=None)
+
         load.init_schema(conn)
+
         done = load.already_succeeded(conn, ds)
+
         conn.close()
 
         if done:
@@ -87,11 +92,9 @@ def westside_pipeline():
         import pandas as pd
 
         records = [transform.flatten_rating(r) for r in records]
+
         df = pd.DataFrame(records).rename(columns={"title": "name"})
-        df["subcategory"] = df.get(
-            "category",
-            "unknown",
-        )  # this source has no subcategory
+        df["subcategory"] = df.get("category", "unknown")
 
         df = transform.transform_catalog(
             df[["name", "price", "category", "subcategory"]]
@@ -121,6 +124,7 @@ def westside_pipeline():
     @task
     def load_task(validated: dict, ds: str) -> None:
         conn = sqlite3.connect(DB_PATH, isolation_level=None)
+
         load.init_schema(conn)
 
         try:
@@ -152,11 +156,15 @@ def westside_pipeline():
             conn.close()
 
     gate = check_already_done()
+
     raw = extract_task(gate)
+
     transformed = transform_task(raw)
+
     validated = validate_task(
         transformed
     )  # 'ds' is auto-injected by Airflow's TaskFlow context
+
     load_task(validated)
 
 

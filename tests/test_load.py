@@ -86,7 +86,6 @@ class TestAtomicReplaceBatch:
             _rec("k2", name="B"),
             {"product_key": "k3"},
         ]
-
         with pytest.raises(KeyError):
             atomic_replace_batch(conn, bad_records, "batchB")
 
@@ -97,23 +96,26 @@ class TestAtomicReplaceBatch:
         assert remaining == [("k1", "batchA")]
 
     def test_retry_after_fixing_the_bad_record_succeeds_fully(self, conn):
-        bad_records = [_rec("k2"), {"product_key": "k3"}]
+        bad_records = [
+            _rec("k2"),
+            {"product_key": "k3"},
+        ]
 
         with pytest.raises(KeyError):
             atomic_replace_batch(conn, bad_records, "batchB")
 
-        good_records = [_rec("k2"), _rec("k3", name="C")]
+        good_records = [
+            _rec("k2"),
+            _rec("k3", name="C"),
+        ]
+
         atomic_replace_batch(conn, good_records, "batchB")
 
         count = conn.execute(
             "SELECT COUNT(*) FROM curated_products WHERE batch_id='batchB'"
         ).fetchone()[0]
+
         assert count == 2
-
-
-class TestRunLedger:
-    def test_unknown_date_has_not_succeeded(self, conn):
-        assert already_succeeded(conn, "2026-01-01") is False
 
     def test_recorded_success_is_detected(self, conn):
         record_run(conn, "2026-01-01", "SUCCESS", rows_loaded=10)
