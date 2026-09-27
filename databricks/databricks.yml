@@ -38,7 +38,7 @@ targets:
       catalog: prod_catalog
       schedule_pause_status: UNPAUSED
     permissions:
-      - level: CAN_MANAGE_RUN
+      - level: CAN_RUN
         group_name: data-engineering
 
 variables:
