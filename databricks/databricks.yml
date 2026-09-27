@@ -12,8 +12,6 @@ bundle:
 permissions:
   - user_name: 71762233009@cit.edu.in
     level: CAN_MANAGE
-  - group_name: data-engineering
-    level: CAN_RUN
 
 sync:
   paths:
